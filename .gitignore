@@ -1,6 +1,2 @@
-/Team1/*.classpath
-/Team1/*.gradle
-/Team1/bin/org/edu/shu/*.class
-/Team1/build/classes/main/org/edu/shu/*.class
-/Team1/.project
-/Team1/.settings/org.eclipse.jdt.groovy.core.prefs
+*.iml
+designpatterns/.idea

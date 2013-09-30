@@ -30,5 +30,4 @@ class SavingsAccountTest extends Specification {
            5             | 25      | 30
 
     }
-
 }

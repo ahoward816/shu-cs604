@@ -1,6 +1,7 @@
 package org.edu.shu;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,9 +11,13 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class SavingsAccount implements Account {
-    public float balance;
+    private static final AtomicLong currentId = new AtomicLong(0);
+
+    private long id;
+    private float balance;
 
     public SavingsAccount(float balance) {
+        this.id = generateNewId();
         this.balance = balance;
     }
 
@@ -20,9 +25,21 @@ public class SavingsAccount implements Account {
         return balance;
     }
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public String deposit(float amount) {
-        this.balance += amount;
-        return new Random().nextInt() + "";
+        SavingsAccountTransaction trans = SavingsAccountTransaction.execute(this, amount);
+        if (trans.getStatus() == Transaction.Status.SUCCESS) {
+            this.balance += amount;
+            return Long.toString(trans.getId());
+        }
+        return "Transaction failed";
+    }
+
+    private static long generateNewId() {
+        return currentId.incrementAndGet();
     }
 }
