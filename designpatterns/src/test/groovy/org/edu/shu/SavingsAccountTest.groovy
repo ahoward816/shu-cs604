@@ -22,12 +22,41 @@ class SavingsAccountTest extends Specification {
         when: " I deposit my account"
             String transactionNumber = savingsAccount.deposit(depositAmount)
         then: " my balance should be higher"
-          savingsAccount.balance == newBalance
+          savingsAccount.getBalance() == newBalance
           transactionNumber != null
         where:
           currentBalance | depositAmount | newBalance
            0             | 100     | 100
            5             | 25      | 30
 
+    }
+
+    @Unroll
+    def "should subtract from account balance"() {
+        given: " I have an account with balance $currentBalance"
+            Account savingsAccount = new SavingsAccount(currentBalance)
+        when: " I withdraw money from my account"
+            String transactionNumber = savingsAccount.withdraw(withdrawal)
+        then: " my balance should be lower"
+            savingsAccount.getBalance() == newBalance
+            transactionNumber != null
+        where:
+            currentBalance | withdrawal | newBalance
+             0             | 100        | 0
+             2500          | 120        | 2380
+    }
+
+    @Unroll
+    def "should deny my withdrawal"() {
+        given: " I have an account with balance $currentBalance"
+            Account savingsAccount = new SavingsAccount(currentBalance)
+        when: " I try to withdraw money from my account"
+            String transactionNumber = savingsAccount.withdraw(withdrawal)
+        then: " I should be prevented due to insufficient funds"
+            savingsAccount.getBalance() == currentBalance
+            transactionNumber.equals("Insufficient funds")
+        where:
+            currentBalance | withdrawal | newBalance
+             0             | 100        | 0
     }
 }

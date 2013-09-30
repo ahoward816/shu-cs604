@@ -62,10 +62,8 @@ public abstract class Transaction {
     }
 
     public void persist() {
-        // save to database
-        Random random = new Random();
+        // save to database (very unreliable db server)
         Status[] values = Status.values();
-        int index = Math.abs(random.nextInt()) % values.length;
-        this.status = values[index];
+        this.status = values[Math.abs(new Random().nextInt()) % values.length];
     }
 }

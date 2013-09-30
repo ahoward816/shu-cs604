@@ -39,6 +39,19 @@ public class SavingsAccount implements Account {
         return "Transaction failed";
     }
 
+    @Override
+    public String withdraw(float amount) {
+        if (this.balance < amount) {
+            return "Insufficient funds";
+        }
+        SavingsAccountTransaction trans = SavingsAccountTransaction.execute(this, amount * -1);
+        if (trans.getStatus() == Transaction.Status.SUCCESS) {
+            this.balance -= amount;
+            return Long.toString(trans.getId());
+        }
+        return "Transaction failed";
+    }
+
     private static long generateNewId() {
         return currentId.incrementAndGet();
     }

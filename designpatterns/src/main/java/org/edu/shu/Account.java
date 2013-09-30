@@ -9,4 +9,5 @@ package org.edu.shu;
  */
 public interface Account {
     public String deposit(float amount);
+    public String withdraw(float amount);
 }
